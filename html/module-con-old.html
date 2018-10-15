@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,width=device-width,initial-scale=1.0'/>
+        <link rel='stylesheet' type='text/css' href='../css/module.css' />
+        <style type='text/css'>
+          .diy-btn-group-test {margin : 10px 0px 0px 0px;}
+          body{-webkit-user-select:none;}
+        </style>
+    </head>
+    <body>
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">1. 版本号，当前设备连接的 SSID</h3>
+  </div>
+  <div class="panel-body">
+        <pre class="pre-scrollable">
+function didGetVersion(ret, err)
+{
+    alert("ret = " + JSON.stringify(ret));
+}
+
+var GizWifiSDK = api.require("gizWifiSDK");
+GizWifiSDK.getVersion(didGetVersion);
+
+
+GizWifiSDK.getPhoneSSID(function(ret, err) {
+    if (err) {
+        alert("errorCode = " + err.errorCode);
+    } else {
+        alert('WIFI:' + ret.SSID);
+    }
+});
+        </pre>
+</div>
+<div class="panel-footer">    
+    <div class="btn-group btn-group-justified">
+      <div class="btn-group">
+        <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+      </div>      
+      <div class="btn-group">
+        <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
+      </div>
+      <div class="btn-group">
+        <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+      </div>
+    </div>
+</div>
+
+  <div class="panel-heading">
+    <h3 class="panel-title">2. 手动下载设备配置文件</h3>
+  </div>
+  <div class="panel-body">
+        <pre class="pre-scrollable">
+function didUpdateDeviceFromServer(ret, err) {
+    if(err)
+    {
+        alert("下载配置失败");
+    }
+    else
+    {
+        alert("下载配置成功");
+    }
+}
+
+var GizWifiSDK = api.require("gizWifiSDK");
+var productKey = "b536db9b15c941c681f983e3c1a8dc1f";//"6f3074fe43894547a4f1314bd7e3ae0b";
+var appID = "7ac10dec7dba436785ac23949536a6eb";
+
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err)
+{
+    if(err)
+    {
+        alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
+    }
+    else
+    {
+        GizWifiSDK.updateDeviceFromServer({"productKey": productKey}, didUpdateDeviceFromServer);
+    }
+});
+        </pre>
+</div>
+<div class="panel-footer">    
+    <div class="btn-group btn-group-justified">
+      <div class="btn-group">
+        <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+      </div>      
+      <div class="btn-group">
+        <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
+      </div>
+      <div class="btn-group">
+        <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+      </div>
+    </div>
+</div>
+
+    <div class="panel-heading">
+        <h3 class="panel-title">3. 整个流程</h3>
+    </div>
+    <div class="panel-body">
+        <pre class="pre-scrollable">
+var GizWifiSDK = api.require("gizWifiSDK");
+var GizWifiDevice = api.require("gizWifiDevice");
+var isLogined = false;
+var uid = null;
+var token = null;
+var currentDevice = null;
+
+var appID = "7ac10dec7dba436785ac23949536a6eb";
+var productKey = "6f3074fe43894547a4f1314bd7e3ae0b";
+var macAddress = "ACCF2359D720";
+            
+function controlDevice() {
+    GizWifiDevice.getIsLAN({"device": currentDevice}, function(ret, err){
+        if(ret.isLAN)
+        {
+            alert("获取硬件信息");
+            GizWifiDevice.getHardwareInfo({"device": currentDevice}, function(ret, err)
+            {
+                if(err)
+                {
+                    alert("getIsLAN() 传入错误的参数");
+                    return;
+                }
+                alert("设备信息: " + JSON.stringify(ret.hardwareInfo));
+            });
+        }
+    });
+    alert("控制设备");
+    GizWifiDevice.write({"device": currentDevice, "data": {"cmd": 1, "entity0": {"LED_G": 254}}});
+}
+
+function detectCurrentDevice()
+{
+    var isLAN = false;
+    var count = 0;
+    
+    //5秒检测，小循环优先
+    var func = null;
+    var cbIsLAN = function(ret, err) {
+        if(err)
+        {
+            alert("getIsLAN() 传入错误的参数");
+            return;
+        }
+
+        count++;
+        isLAN = ret.isLAN;
+        
+        if(true == isLAN || count == 500)
+        {
+            GizWifiDevice.getIsOnline({"device": currentDevice}, didGetIsOnline);
+        }
+        else
+        {
+            setTimeout(func, 10);
+        }
+    };
+    
+    func = function(){
+        GizWifiDevice.getIsLAN({"device": currentDevice}, cbIsLAN);
+    };
+    
+    setTimeout(func, 10);
+}
+
+function loginCurrentDevice()
+{
+    if(!isLogined)
+    {
+        alert("登录中...");
+        isLogined = true;
+        GizWifiDevice.registerNotifications(didReceiveNotification);
+        GizWifiDevice.login({"device": currentDevice, "uid": uid, "token": token}, didLogin);
+    }
+    else
+    {
+        alert("设备已登录");
+    }
+}
+
+function didUserLogin(ret, err) {
+    if(err)
+    {
+        alert("登陆失败，errorCode = " + err.errorCode);
+    }
+    else
+    {
+        alert("uid:"+ret.uid+"\ntoken:"+ret.token);
+        uid = ret.uid;
+        token = ret.token;
+        alert("搜索设备中...");
+        GizWifiSDK.getBoundDevices({"uid": uid, "token": token, "specialProductKeys": [productKey]}, didDiscovered);
+    }
+}
+            
+function didDiscovered(ret, err) {
+    if(err)
+    {
+        alert("err = " + JSON.stringify(err));
+        return;
+    }
+
+    if(ret.devices.length > 0 && null == currentDevice)
+    {
+        for(var i = 0; i < ret.devices.length; i++)
+        {
+            var device = ret.devices[i];
+
+            //控制设备
+            if(device.mac == macAddress)
+            {
+                currentDevice = ret.devices[i];
+                break;
+            }
+        }
+
+        if(null == currentDevice)
+        {
+            return;
+        }
+        
+        var GizWifiDeviceTypeNormal = 0;
+        var GizWifiDeviceTypeCenterControl = 1;
+        
+        var type = "未知";
+        switch(currentDevice.type)
+        {
+            case GizWifiDeviceTypeNormal:
+                type = "普通";
+                break;
+            case GizWifiDeviceTypeCenterControl:
+                type = "中控网关";
+                break;
+        }
+        alert("设备类型：" + type);
+        
+        GizWifiDevice.getIsBind({"device": currentDevice, "uid": uid}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("getIsBind() 传入错误的参数");
+                return;
+            }
+
+            var isBind = ret.isBind;
+            if(false == isBind)
+            {
+                alert("绑定中...");
+                GizWifiSDK.bindDevice({"uid": uid, "token": token, "did": currentDevice.did},didBindDevice);
+            }
+            else
+            {
+                if(currentDevice.isConnected == false)
+                {
+                    alert("检测设备状态");
+                    detectCurrentDevice();
+                }
+                else
+                {
+                    alert("直接控制");
+                    controlDevice();
+                }
+            }
+        });
+    }
+}
+            
+function didBindDevice(ret, err) {
+    if(err)
+    {
+        alert("绑定失败，errorCode = " + err.errorCode);
+        currentDevice = null;
+    }
+    else
+    {
+        detectCurrentDevice();
+    }
+}
+            
+function didGetIsOnline(ret, err) {
+    if(err)
+    {
+        alert("getIsOnline() 传入错误的参数");
+        return;
+    }
+       
+    if(true == ret.isOnline)
+    {
+        loginCurrentDevice();
+    }
+    else
+    {
+        GizWifiDevice.getIsLAN({"device": currentDevice}, didGetIsLAN);
+    }
+}
+
+function didGetIsLAN(ret, err) {
+    if(err)
+    {
+        alert("getIsLAN() 传入错误的参数");
+        return;
+    }
+    if(ret.isLAN)
+    {
+        loginCurrentDevice();
+    }
+    else
+    {
+        alert("当前设备不在线，无法控制。");
+    }
+}
+            
+function didLogin(ret, err) {
+    if(err)
+    {
+        alert("登录失败，errorCode = " + err.errorCode);
+    }
+    else
+    {
+        alert("登录成功");
+        controlDevice();
+    }
+}
+
+function didReceiveNotification(ret, err) {
+    if(err)
+    {
+        alert("接收通知时发生错误 err = " + JSON.stringify(err));
+        return;
+    }
+       
+    //alert("callBack = " + JSON.stringify(ret) + "\r\n" +
+    alert("ret.isConnected = " + ret.isConnected + "\r\n" +
+    "ret.isOnline = " + ret.isOnline + "\r\n" +
+    "ret.status = " + JSON.stringify(ret.status) + "\r\n" +
+    "ret.device = " + JSON.stringify(ret.device));
+
+    if(ret.isConnected == false)
+    {
+        isLogined = false;
+    }
+}
+
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err)
+{
+    if(err)
+    {
+        alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
+    }
+    else
+    {
+        alert("匿名登录中...");
+        GizWifiSDK.userLoginAnonymous(didUserLogin);
+    }
+});
+        </pre>
+    </div>
+    <div class="panel-footer">
+        <div class="btn-group btn-group-justified">
+            <div class="btn-group">
+                <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+            </div>      
+            <div class="btn-group">
+                <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
+            </div>
+            <div class="btn-group">
+                <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            </div>
+        </div>
+    </div>
+        <div class="panel-heading">
+            <h3 class="panel-title">4. 解绑已绑定的第一个设备</h3>
+        </div>
+        <div class="panel-body">
+            <pre class="pre-scrollable">
+var GizWifiSDK = api.require("gizWifiSDK");
+var GizWifiDevice = api.require("gizWifiDevice");
+var isLogined = false;
+var uid = null;
+var token = null;
+var currentDevice = null;
+
+var appID = "7ac10dec7dba436785ac23949536a6eb";
+
+var isDiscoverLock = false;
+            
+function didUserLogin(ret, err) {
+    if(err)
+    {
+        alert("登陆失败，errorCode = " + err.errorCode);
+    }
+    else
+    {
+        uid = ret.uid;
+        token = ret.token;
+        alert("搜索设备中...");
+        GizWifiSDK.getBoundDevices({"uid": uid, "token": token, "specialProductKeys": []}, didDiscovered);
+    }
+}
+            
+function didDiscovered(ret, err) {
+    if(err)
+    {
+        alert("err = " + JSON.stringify(err));
+        return;
+    }
+
+    if(ret.devices.length > 0 && null == currentDevice)
+    {
+        for(var i = 0; i < ret.devices.length; i++)
+        {
+            while(isDiscoverLock)
+            {
+                sleep(1);
+            }
+            isDiscoverLock = true;
+
+            var device = ret.devices[i];
+            
+            //解绑脚本
+            GizWifiDevice.getIsBind({"device": device, "uid": uid}, function(ret, err) {
+                if(err)
+                {
+                    alert("getIsBind() 传入错误的参数");
+                    return;
+                }
+                if(true == ret.isBind)
+                {
+                    currentDevice = device;
+                    //断开连接
+                    GizWifiDevice.getIsConnected({"device": device}, function(ret, err) {
+                        if(err)
+                        {
+                            alert("getIsConnected() 传入错误的参数");
+                            return;
+                        }
+                        if(true == ret.isConnected)
+                        {
+                            alert("断开设备的连接...");
+                            GizWifiDevice.disconnect({"device": device}, didDisconnected);
+                        }
+                        else
+                        {
+                            unBindDevice();
+                        }
+                    });
+                }
+                else
+                {
+                    isDiscoverLock = false;
+                }
+            });
+        }
+    }
+}
+
+function unBindDevice() {
+    GizWifiSDK.unbindDevice({"uid": uid, "token": token, "did": currentDevice.did}, didUnbindDevice);
+}
+
+function didDisconnected(ret, err) {
+    if(err)
+    {
+        alert("err = " + JSON.stringify(err));
+        return;
+    }
+    
+    var device = ret.device;
+    if(false == ret.isConnected)
+    {
+        alert("设备已断开连接");
+        unBindDevice();
+    }else
+        alert("设备未能断开连接: MAC = " + device.mac);
+}
+
+function didUnbindDevice(ret, err) {
+    var device = currentDevice;
+    currentDevice = null;
+    
+    if(err)
+    {
+        alert("设备 \"" + device.mac + "\" 解除绑定失败，errorCode = " + err.errorCode);
+    }
+    else
+    {
+        alert("设备 \"" + device.mac + "\" 解除绑定成功");
+    }
+    
+    isDiscoverLock = false;
+}
+
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err)
+{
+    if(err)
+    {
+        alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
+    }
+    else
+    {
+        alert("匿名登录中...");
+        GizWifiSDK.userLoginAnonymous(didUserLogin);
+    }
+});
+            </pre>
+        </div>
+        <div class="panel-footer">
+            <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                    <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+                </div>      
+                <div class="btn-group">
+                    <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
+                </div>
+                <div class="btn-group">
+                    <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-heading">
+            <h3 class="panel-title">5. 设置日志分级、配置设备上网</h3>
+        </div>
+        <div class="panel-body">
+            <pre class="pre-scrollable">
+var appID = "7ac10dec7dba436785ac23949536a6eb";            
+var GizWifiSDK = api.require("gizWifiSDK");
+
+// 日志模式（枚举）
+var GizWifiLogLevelError = 0;
+var GizWifiLogLevelWarning = 1;
+var GizWifiLogLevelAll = 2;
+
+// 配置设备上线模式（枚举）
+var GizWifiSDKSoftAPMode = 1;
+var GizWifiSDKAirLinkMode = 2;
+
+alert("正在配置...");
+
+GizWifiSDK.setLogLevel({"logLevel": GizWifiLogLevelAll, "printDataLevel": true});
+/*GizWifiSDK.getSSIDList(function(ret, err)
+{
+    if(err)
+    {
+        alert("getSSIDList() 遇到错误 err = " + JSON.stringify(err));
+        return;
+    }
+
+    alert("ret = " + JSON.stringify(ret));
+});*/
+
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err)
+{
+    if(err)
+    {
+        alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
+    }
+    else
+    {
+        GizWifiSDK.setDeviceWifi({"ssid": "919",
+        "key": "900901902",
+        "mode": GizWifiSDKAirLinkMode,
+        "softAPSSIDPrefix": "XPG-GAgent",
+        "timeout": 60}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("setDeviceWifi() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            
+            alert("ret = " + JSON.stringify(ret));
+        });
+    }
+});
+            </pre>
+        </div>
+        <div class="panel-footer">
+            <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                    <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+                </div>      
+                <div class="btn-group">
+                    <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
+                </div>
+                <div class="btn-group">
+                    <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-heading">
+            <h3 class="panel-title">6. 用户注册</h3>
+        </div>
+        <div class="panel-body">
+            <pre class="pre-scrollable">
+var appID = "7ac10dec7dba436785ac23949536a6eb";            
+var GizWifiSDK = api.require("gizWifiSDK");
+
+//在这里，输入你的电话号码，和验证码
+var phone = "phone";
+var code = "code";
+
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err)
+{
+    if(err)
+    {
+        alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
+    }
+    else
+    {
+        alert("注册中...");
+        
+        //普通用户注册
+        GizWifiSDK.registerUser({"userName": "test123", "password": "123456"}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("registerUser() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("ret = " + JSON.stringify(ret));
+        });
+        
+        /*
+        //手机用户
+        GizWifiSDK.requestSendVerifyCode({"phone": phone}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("requestSendVerifyCode() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("ret = " + JSON.stringify(ret));
+        });
+        
+        GizWifiSDK.registerUserByPhoneAndCode({"phone": phone, "password": "123456", "code": code}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("registerUserByPhoneAndCode() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("ret = " + JSON.stringify(ret));
+        });
+        */
+        /*
+        //邮箱用户
+        GizWifiSDK.registerUserByEmail({"email": "10000@qq.com", "password": "123456"}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("registerUserByEmail() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("ret = " + JSON.stringify(ret));
+        });
+        */
+    }
+});
+            </pre>
+        </div>
+        <div class="panel-footer">
+            <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                    <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+                </div>      
+                <div class="btn-group">
+                    <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
+                </div>
+                <div class="btn-group">
+                    <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-heading">
+            <h3 class="panel-title">7. 用户登录</h3>
+        </div>
+        <div class="panel-body">
+            <pre class="pre-scrollable">
+var appID = "7ac10dec7dba436785ac23949536a6eb";            
+var GizWifiSDK = api.require("gizWifiSDK");
+
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err)
+{
+    if(err)
+    {
+        alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
+    }
+    else
+    {
+        alert("登录中...");
+        
+        //普通用户登录
+        GizWifiSDK.userLogin({"userName": "test123", "password": "123456"}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("userLogin() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("ret = " + JSON.stringify(ret));
+        });
+        
+        /*
+        //第三方账号登录
+        //类型：0=百度，1=新浪
+        //在这里，输入你使用第三方 SDK 得到的 uid，token
+        var GizWifiThridAccountTypeBAIDU = 0;
+        var GizWifiThridAccountTypeSINA = 1;
+        var GizWifiThridAccountTypeQQ = 2;
+        
+        var type = GizWifiThridAccountTypeBAIDU;
+        var uid = "uid";
+        var token = "token";
+        
+        GizWifiSDK.userLoginWithThirdAccountType({"thirdAccountType": type, "uid": uid, "token": token}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("userLoginWithThirdAccountType() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("ret = " + JSON.stringify(ret));
+        });
+        */
+    }
+});
+            </pre>
+        </div>
+        <div class="panel-footer">
+            <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                    <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+                </div>      
+                <div class="btn-group">
+                    <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
+                </div>
+                <div class="btn-group">
+                    <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+                </div>
+            </div>
+        </div>
+                <div class="panel-heading">
+            <h3 class="panel-title">8. 转换匿名用户为实名用户</h3>
+        </div>
+        <div class="panel-body">
+            <pre class="pre-scrollable">
+var appID = "7ac10dec7dba436785ac23949536a6eb";            
+var GizWifiSDK = api.require("gizWifiSDK");
+
+//在这里，设置token
+var token = "token";
+var phone = "phone";
+var code = "code";
+
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err)
+{
+    if(err)
+    {
+        alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
+    }
+    else
+    {
+        alert("转换中...");
+        
+        //匿名用户转普通用户
+        GizWifiSDK.transAnonymousUserToNormalUser({"token": token, "userName": "test123", "password": "123456"}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("transAnonymousUserToNormalUser() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("ret = " + JSON.stringify(ret));
+        });
+        
+        /*
+        //匿名用户转手机用户
+        GizWifiSDK.transAnonymousUserToPhoneUser({"token": token, "phone": phone, "password": "123456", code: code}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("transAnonymousUserToPhoneUser() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("ret = " + JSON.stringify(ret));
+        });
+        */
+    }
+});
+            </pre>
+        </div>
+        <div class="panel-footer">
+            <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                    <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+                </div>      
+                <div class="btn-group">
+                    <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
+                </div>
+                <div class="btn-group">
+                    <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-heading">
+            <h3 class="panel-title">9. 修改密码、忘记密码</h3>
+        </div>
+        <div class="panel-body">
+            <pre class="pre-scrollable">
+var appID = "7ac10dec7dba436785ac23949536a6eb";            
+var GizWifiSDK = api.require("gizWifiSDK");
+
+//在这里，设置token
+var token = "token";
+var code = "code";
+var phone = "phone";
+
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err)
+{
+    if(err)
+    {
+        alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
+    }
+    else
+    {
+        alert("正在请求...");
+        
+        //修改密码
+        GizWifiSDK.changeUserPassword({"token": token, "oldPassword": "123456", "newPassword": "111111"}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("changeUserPassword() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("ret = " + JSON.stringify(ret));
+        });
+        
+        /*
+        //通过手机用户忘记密码
+        GizWifiSDK.changeUserPasswordByCode({"phone": phone, "code": code, "newPassword": "111111"}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("changeUserPasswordByCode() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("ret = " + JSON.stringify(ret));
+        });
+        */
+        
+        /*
+        //通过邮箱用户忘记密码
+        GizWifiSDK.changeUserPasswordByEmail({"email": "1389128712312@qq.com"}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("changeUserPasswordByEmail() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("ret = " + JSON.stringify(ret));
+        });
+        */
+    }
+});
+            </pre>
+        </div>
+        <div class="panel-footer">
+            <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                    <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+                </div>      
+                <div class="btn-group">
+                    <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
+                </div>
+                <div class="btn-group">
+                    <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-heading">
+            <h3 class="panel-title">10. 账号补充邮箱、手机信息</h3>
+        </div>
+        <div class="panel-body">
+            <pre class="pre-scrollable">
+var appID = "7ac10dec7dba436785ac23949536a6eb";            
+var GizWifiSDK = api.require("gizWifiSDK");
+
+//在这里，设置token
+var token = "token";
+var phone = "phone";
+var code = "code";
+
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err)
+{
+    if(err)
+    {
+        alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
+    }
+    else
+    {
+        alert("正在请求...");
+        
+        //账号补充邮箱信息
+        GizWifiSDK.changeUserEmail({"token": token, "email": "10000@qq.com"}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("changeUserPassword() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("ret = " + JSON.stringify(ret));
+        });
+        
+        /*
+        //账号补充手机信息
+        GizWifiSDK.changeUserPhone({"token": token, "phone": phone, "code": code}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("changeUserPasswordByCode() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("ret = " + JSON.stringify(ret));
+        });
+        */
+    }
+});
+            </pre>
+        </div>
+        <div class="panel-footer">
+            <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                    <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+                </div>      
+                <div class="btn-group">
+                    <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
+                </div>
+                <div class="btn-group">
+                    <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-heading">
+            <h3 class="panel-title">11. 中控分组</h3>
+        </div>
+        <div class="panel-body">
+            <pre class="pre-scrollable">
+var appID = "7ac10dec7dba436785ac23949536a6eb";
+var GizWifiSDK = api.require("gizWifiSDK");
+var GizWifiGroup = api.require("gizWifiGroup");
+
+//在这里，设置token
+var uid = null;
+var token = null;
+var productkey = "6f3074fe43894547a4f1314bd7e3ae0b";
+
+function didUserLogin(ret, err)
+{
+    if(err)
+    {
+        alert("登录失败, err = " + JSON.stringify(err));
+        return;
+    }
+    
+    uid = ret.uid;
+    token = ret.token;
+
+    //获取分组列表
+    GizWifiSDK.getGroups({"uid": uid, "token": token, "specialProductKeys": []}, function(ret, err)
+    {
+        if(err)
+        {
+            alert("getGroups() 遇到错误 err = " + JSON.stringify(err));
+            return;
+        }
+        alert("GizWifiSDK.getGroups() ret = " + JSON.stringify(ret));
+        
+        var did = "AuYrjCfWQdiAQWjRHf6Hji";
+        var sdid = "4101";
+        var group = ret.groups[0];
+        
+        if(null == group)
+        {
+            alert("没有分组");
+            return;
+        }
+        
+        GizWifiGroup.getGid({"group": group}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("getGid() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("GizWifiGroup.getGid() ret = " + JSON.stringify(ret));
+        });
+        
+        GizWifiGroup.getProductKey({"group": group}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("getProductKey() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("GizWifiGroup.getProductKey() ret = " + JSON.stringify(ret));
+        });
+        
+        GizWifiGroup.getGroupName({"group": group}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("getGroupName() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("GizWifiGroup.getGroupName() ret = " + JSON.stringify(ret));
+        });
+
+        //获取分组子设备列表
+        //要能成功获取到对应的设备，需要先执行中控获取子设备列表的方法。详细可以参考中控基础流程示例
+        GizWifiGroup.getDevices({"group": group}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("addDevice() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("GizWifiGroup.getDevices() ret = " + JSON.stringify(ret));
+        });
+        
+        /*
+        //添加设备到分组
+        GizWifiGroup.addDevice({"group": group, device:{"did": did, "subDid": sdid}}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("addDevice() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("GizWifiGroup.addDevice() ret = " + JSON.stringify(ret));
+        });
+        */
+        /*
+        //从分组中删除设备
+        GizWifiGroup.removeDevice({"group": group, device:{"did": did, "subDid": sdid}}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("removeDevice() 遇到错误 err = " + JSON.stringify(err));
+                return;
+            }
+            alert("GizWifiGroup.removeDevice() ret = " + JSON.stringify(ret));
+        });
+        */
+    });
+    
+    /*
+    //添加分组
+    GizWifiSDK.addGroup({"uid": uid, "token": token, "productKey": productkey, "groupName": "test1", "specialDevices": []}, function(ret, err)
+    {
+        if(err)
+        {
+            alert("addGroup() 遇到错误 err = " + JSON.stringify(err));
+            return;
+        }
+        alert("ret = " + JSON.stringify(ret));
+    });
+    */
+    /*
+    //删除分组
+    GizWifiSDK.removeGroup({"uid": uid, "token": token, "gid": "0"}, function(ret, err)
+    {
+        if(err)
+        {
+            alert("removeGroup() 遇到错误 err = " + JSON.stringify(err));
+            return;
+        }
+        alert("ret = " + JSON.stringify(ret));
+    });
+    */
+    /*
+    //编辑分组
+    GizWifiSDK.editGroup({"uid": uid, "token": token, "gid": "1", "groupName": "test2", "specialDevices": []}, function(ret, err)
+    {
+        if(err)
+        {
+            alert("editGroup() 遇到错误 err = " + JSON.stringify(err));
+            return;
+        }
+        alert("ret = " + JSON.stringify(ret));
+        
+        var groups = ret.groups;
+        var group = null;
+        for(var i = 0; i < groups.length; i++)
+        {
+            if(groups[i].gid == 1)
+            {
+                group = groups[i];
+            }
+        }
+        if(null != group)
+        {
+            GizWifiGroup.getGroupName({"group": group}, function(ret, err)
+            {
+                if(err)
+                {
+                    alert("getGroupName() 遇到错误 err = " + JSON.stringify(err));
+                    return;
+                }
+                alert("ret = " + JSON.stringify(ret));
+            });
+        }
+        else
+        {
+            alert("不能获取 gid = 1 的组.");
+        }
+    });
+    */
+}
+
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err)
+{
+    if(err)
+    {
+        alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
+    }
+    else
+    {
+        alert("匿名登录中...");
+        GizWifiSDK.userLoginAnonymous(didUserLogin);
+    }
+});
+            </pre>
+        </div>
+        <div class="panel-footer">
+            <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                    <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+                </div>      
+                <div class="btn-group">
+                    <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
+                </div>
+                <div class="btn-group">
+                    <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+                </div>
+            </div>
+        </div>
+    <div class="panel-heading">
+        <h3 class="panel-title">12. 中控整个流程</h3>
+    </div>
+    <div class="panel-body">
+        <pre class="pre-scrollable">
+var GizWifiSDK = api.require("gizWifiSDK");
+var GizWifiCentralControlDevice = api.require("gizWifiCentralControlDevice");
+var GizWifiSubDevice = api.require("gizWifiSubDevice");
+var isLogined = false;
+var uid = null;
+var token = null;
+var currentDevice = null;
+
+var appID = "7ac10dec7dba436785ac23949536a6eb";
+var productKey = "a350195b4d814890aaffde668e02668d";
+var macAddress = "ACCF233469BE";
+
+function loginCentralDeviceSucceed() {
+    GizWifiCentralControlDevice.getIsLAN({"device": currentDevice}, function(ret, err)
+    {
+        if(err)
+        {
+            alert("getIsLAN() 传入错误的参数");
+            return;
+        }
+        if(ret.isLAN)
+        {
+            GizWifiCentralControlDevice.getHardwareInfo({"device": currentDevice}, function(ret, err)
+            {
+                if(err)
+                {
+                    alert("getHardwareInfo() 传入错误的参数");
+                    return;
+                }
+                alert("设备信息: " + JSON.stringify(ret.hardwareInfo));
+            });
+        }
+    });
+    
+    //删除中控子设备
+    /*
+    GizWifiCentralControlDevice.deleteSubDevice({"device": currentDevice, "subDid": "4096"}, function(ret, err)
+    {
+        if(err)
+        {
+            alert("deleteSubDevice() 传入错误的参数");
+            return;
+        }
+        alert("删除设备后的结果: " + JSON.stringify(ret));
+    });
+    */
+    
+    //添加中控子设备
+    GizWifiCentralControlDevice.addSubDevice({"device": currentDevice});
+    
+    //获取中控子设备列表
+    GizWifiCentralControlDevice.getSubDevices({"device": currentDevice}, function(ret, err)
+    {
+        if(err)
+        {
+            alert("getSubDevices() failed.");
+            return;
+        }
+        var subDevices = ret.subDevices;
+        var subDeviceLength = subDevices.length;
+        if(subDeviceLength > 0)
+        {
+            for(var i = 0; i < subDeviceLength; i++)
+            {
+                detectSubDevice(subDevices[i]);
+            }
+        }
+    });
+}
+
+function detectSubDevice(subDevice)
+{
+    if(subDevice.isOnline)
+    {
+        //获取属性
+        GizWifiSubDevice.getSubDid({"device": subDevice}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("getSubDid() 传入错误的参数");
+                return;
+            }
+            alert("设备信息: " + JSON.stringify(ret));
+        })
+    
+        GizWifiSubDevice.getSubProductKey({"device": subDevice}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("getSubDid() 传入错误的参数");
+                return;
+            }
+            alert("设备信息: " + JSON.stringify(ret));
+        })
+    
+        GizWifiSubDevice.getSubProductName({"device": subDevice}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("getSubDid() 传入错误的参数");
+                return;
+            }
+            alert("设备信息: " + JSON.stringify(ret));
+        })
+    
+        //注册通知
+        GizWifiSubDevice.registerNotifications(function(ret, err)
+        {
+            if(err)
+            {
+                alert("write() 失败");
+                return;
+            }
+            alert(JSON.stringify(ret));
+        });
+    
+        setTimeout(function()
+        {
+            controlCurrentDevice(subDevice, 0);
+        }, 1000);
+    }
+}
+
+function controlCurrentDevice(subDevice, counter)
+{
+    counter++;
+    var lightness = parseInt(Math.random()*254);
+    
+    //控制
+    GizWifiSubDevice.write({"device": subDevice, "data": {"cmd": 1, "entity0": {"OnOff": true, "Lightness": lightness}}});
+    
+    if(counter > 5)
+        return;
+    
+    setTimeout(function()
+    {
+        controlCurrentDevice(subDevice, counter);
+    }, 1000);
+}
+          
+function detectCurrentDevice()
+{
+    var isLAN = false;
+    var count = 0;
+    
+    //5秒检测，小循环优先
+    var func = null;
+    var cbIsLAN = function(ret, err) {
+        if(err)
+        {
+            alert("getIsLAN() 传入错误的参数");
+            return;
+        }
+
+        count++;
+        isLAN = ret.isLAN;
+        
+        if(true == isLAN || count == 500)
+        {
+            GizWifiCentralControlDevice.getIsOnline({"device": currentDevice}, didGetIsOnline);
+        }
+        else
+        {
+            setTimeout(func, 10);
+        }
+    };
+    
+    func = function(){
+        GizWifiCentralControlDevice.getIsLAN({"device": currentDevice}, cbIsLAN);
+    };
+    
+    setTimeout(func, 10);
+}
+
+function loginCurrentDevice()
+{
+    if(!isLogined)
+    {
+        alert("登录中...");
+        isLogined = true;
+        GizWifiCentralControlDevice.registerNotifications(didReceiveNotification);
+        GizWifiCentralControlDevice.login({"device": currentDevice, "uid": uid, "token": token}, didLogin);
+    }
+    else
+    {
+        alert("设备已登录");
+    }
+}
+
+function didUserLogin(ret, err) {
+    if(err)
+    {
+        alert("登陆失败，errorCode = " + err.errorCode);
+    }
+    else
+    {
+        uid = ret.uid;
+        token = ret.token;
+        alert("搜索设备中...");
+        GizWifiSDK.getBoundDevices({"uid": uid, "token": token, "specialProductKeys": [productKey]}, didDiscovered);
+    }
+}
+            
+function didDiscovered(ret, err) {
+    if(err)
+    {
+        alert("err = " + JSON.stringify(err));
+        return;
+    }
+
+    if(ret.devices.length > 0 && null == currentDevice)
+    {
+        for(var i = 0; i < ret.devices.length; i++)
+        {
+            var device = ret.devices[i];
+
+            //控制设备
+            if(device.mac == macAddress)
+            {
+                currentDevice = ret.devices[i];
+                break;
+            }
+        }
+
+        if(null == currentDevice)
+        {
+            return;
+        }
+        
+        GizWifiCentralControlDevice.getType({"device": currentDevice}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("getType() 传入错误的参数");
+                return;
+            }
+            
+            var GizWifiDeviceTypeNormal = 0;
+            var GizWifiDeviceTypeCenterControl = 1;
+            
+            var type = "未知";
+            switch(ret.type)
+            {
+                case GizWifiDeviceTypeNormal:
+                    type = "普通";
+                    break;
+                case GizWifiDeviceTypeCenterControl:
+                    type = "中控网关";
+                    break;
+            }
+            alert("设备类型：" + type);
+        });
+        
+        GizWifiCentralControlDevice.getIsBind({"device": currentDevice, "uid": uid}, function(ret, err)
+        {
+            if(err)
+            {
+                alert("getIsBind() 传入错误的参数");
+                return;
+            }
+
+            var isBind = ret.isBind;
+            if(false == isBind)
+            {
+                alert("绑定中...");
+                GizWifiSDK.bindDevice({"uid": uid, "token": token, "did": currentDevice.did},didBindDevice);
+            }
+            else
+            {
+                 GizWifiCentralControlDevice.getIsConnected({"device": currentDevice}, function(ret, err) {
+                    if(err)
+                    {
+                        alert("getIsConnected() 传入错误的参数");
+                        return;
+                    }
+ 
+                    if(true == ret.isConnected)
+                    {
+                        alert("已登录");
+                        loginCentralDeviceSucceed();
+                    }
+                    else
+                    {
+                        detectCurrentDevice();
+                    }
+                })
+             }
+        });
+    }
+}
+            
+function didBindDevice(ret, err) {
+    if(err)
+    {
+        alert("绑定失败，errorCode = " + err.errorCode);
+        currentDevice = null;
+    }
+    else
+    {
+        detectCurrentDevice();
+    }
+}
+            
+function didGetIsOnline(ret, err) {
+    if(err)
+    {
+        alert("getIsOnline() 传入错误的参数");
+        return;
+    }
+       
+    if(true == ret.isOnline)
+    {
+        loginCurrentDevice();
+    }
+    else
+    {
+        GizWifiCentralControlDevice.getIsLAN({"device": currentDevice}, didGetIsLAN);
+    }
+}
+
+function didGetIsLAN(ret, err) {
+    if(err)
+    {
+        alert("getIsLAN() 传入错误的参数");
+        return;
+    }
+    if(ret.isLAN)
+    {
+        loginCurrentDevice();
+    }
+    else
+    {
+        alert("当前设备不在线，无法控制。");
+    }
+}
+            
+function didLogin(ret, err) {
+    if(err)
+    {
+        alert("登录失败，errorCode = " + err.errorCode);
+    }
+    else
+    {
+        loginCentralDeviceSucceed();
+    }
+}
+
+function didReceiveNotification(ret, err) {
+    if(err)
+    {
+        alert("接收通知时发生错误 err = " + JSON.stringify(err));
+        return;
+    }
+       
+    //alert("callBack = " + JSON.stringify(ret) + "\r\n" +
+    alert("ret.isConnected = " + ret.isConnected + "\r\n" +
+    "ret.isOnline = " + ret.isOnline + "\r\n" +
+    "ret.status = " + JSON.stringify(ret.status) + "\r\n" +
+    "ret.device = " + JSON.stringify(ret.device) + "\r\n" + 
+    "ret.subDevices = " + JSON.stringify(ret.subDevices));
+
+    if(ret.isConnected == false)
+    {
+        isLogined = false;
+    }
+}
+            
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err)
+{
+    if(err)
+    {
+        alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
+    }
+    else
+    {
+        alert("匿名登录中...");
+        GizWifiSDK.userLoginAnonymous(didUserLogin);
+    }
+});
+        </pre>
+    </div>
+    <div class="panel-footer">
+        <div class="btn-group btn-group-justified">
+            <div class="btn-group">
+                <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+            </div>      
+            <div class="btn-group">
+                <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
+            </div>
+            <div class="btn-group">
+                <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            </div>
+        </div>
+    </div>
+    <div class="panel-heading">
+        <h3 class="panel-title">13. 字符串数组互转</h3>
+    </div>
+    <div class="panel-body">
+        <pre class="pre-scrollable">
+var GizWifiBinary = api.require("gizWifiBinary");
+
+//数组编码字符串
+var src = [1, 2, 3, 4];
+var src2 = "AQIDBA==";
+GizWifiBinary.encode({"binaryData": src}, function(ret, err)
+{
+    alert("ret = " + JSON.stringify(ret));
+});
+
+GizWifiBinary.decode({"binary": src2}, function(ret, err)
+{
+    alert("ret = " + JSON.stringify(ret));
+});
+        </pre>
+    </div>
+    <div class="panel-footer">
+        <div class="btn-group btn-group-justified">
+            <div class="btn-group">
+                <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+            </div>
+            <div class="btn-group">
+                <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
+            </div>
+            <div class="btn-group">
+                <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            </div>
+        </div>
+    </div>
+    <div class="panel-heading">
+        <h3 class="panel-title">13. 新版短信验证码</h3>
+    </div>
+    <div class="panel-body">
+        <pre class="pre-scrollable">
+var GizWifiSDK = api.require("gizWifiSDK");
+var appID = "42a7563f305342ae805cbb21d968a0ce";
+var appSecret = "dc5b945db45f427c97ec9ae881850623";
+
+var phone = "自行填写";
+
+var token = "自行填写";
+var captchaId = "自行填写";
+var captchaCode = "自行填写";
+var phoneCode = "自行填写";
+
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err)
+{
+    if(err)
+    {
+        alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
+    }
+    else
+    {
+        alert("SDK 初始化成功");
+    }
+});
+
+GizWifiSDK.getCaptchaCode({"appSecret": appSecret}, function(ret, err)
+{
+    if(ret)
+    {
+        token = ret.token;
+        captchaId = ret.captchaId;
+    }
+
+    alert("ret = " + JSON.stringify(ret));
+    alert("err = " + JSON.stringify(err));
+});
+/*
+GizWifiSDK.requestSendPhoneSMSCode({"token": token, "captchaId": captchaId, "captchaCode": captchaCode, "phone": phone}, function(ret, err)
+{
+    alert("ret = " + JSON.stringify(ret));
+    alert("err = " + JSON.stringify(err));
+});
+
+GizWifiSDK.verifyPhoneSMSCode({"token": token, "phoneCode": phoneCode, "phone": phone}, function(ret, err)
+{
+    alert("ret = " + JSON.stringify(ret));
+    alert("err = " + JSON.stringify(err));
+})
+*/
+        </pre>
+    </div>
+    <div class="panel-footer">
+        <div class="btn-group btn-group-justified">
+            <div class="btn-group">
+                <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+            </div>      
+            <div class="btn-group">
+                <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
+            </div>
+            <div class="btn-group">
+                <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            </div>
+        </div>
+    </div>
+    <div class="panel-heading">
+        <h3 class="panel-title">14.修改、获取用户信息</h3>
+    </div>
+    <div class="panel-body">
+        <pre class="pre-scrollable">
+var GizWifiSDK = api.require("gizWifiSDK");
+var appID = "42a7563f305342ae805cbb21d968a0ce";
+var token = "自行填写";
+
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err)
+{
+    if(err)
+    {
+        alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
+    }
+    else
+    {
+        alert("SDK 初始化成功");
+    }
+});
+/*
+GizWifiSDK.changeUserAdditionalInfo({"token": token, "additionalInfo": {"name": "test", "gender": "Male", "birthday": "1990-01-01", "address": "test addr", "remark": "test remark"}}, function(ret, err)
+{
+    alert("ret = " + JSON.stringify(ret));
+    alert("err = " + JSON.stringify(err));
+});
+*/
+GizWifiSDK.getUserInfo({"token": token}, function(ret, err)
+{
+    alert("ret = " + JSON.stringify(ret));
+    alert("err = " + JSON.stringify(err));
+});
+        </pre>
+    </div>
+    <div class="panel-footer">
+        <div class="btn-group btn-group-justified">
+            <div class="btn-group">
+                <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+            </div>      
+            <div class="btn-group">
+                <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
+            </div>
+            <div class="btn-group">
+                <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            </div>
+        </div>
+    </div>
+
+<div class="panel-heading">
+    <h3 class="panel-title">15.设置服务器</h3>
+</div>
+<div class="panel-body">
+    <pre class="pre-scrollable">
+var GizWifiSDK = api.require("gizWifiSDK");
+var appID = "42a7563f305342ae805cbb21d968a0ce";
+
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+    if (err) {
+        alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
+    } else {
+        alert("SDK 初始化成功");
+        GizWifiSDK.setCloudService({"openAPIDomain": "usapi.gizwits.com", "openAPIPort": 80, "siteDomain": "ussite.gizwits.com", "sitePort": 80}, function(ret, err) {
+            if (err) {
+                alert("设置服务器失败。错误信息：" + JSON.stringify(err));
+            } else {
+                alert("设置服务器成功：" + JSON.stringify(ret));
+            }
+        });
+    }
+});
+    </pre>
+</div>
+<div class="panel-footer">
+    <div class="btn-group btn-group-justified">
+        <div class="btn-group">
+            <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+        </div>
+        <div class="btn-group">
+            <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
+        </div>
+        <div class="btn-group">
+            <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+        </div>
+    </div>
+</div>
+
+</div>
+    </body>
+    <script src='../script/module.js'></script>
+</html>
