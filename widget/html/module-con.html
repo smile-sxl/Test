@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html lang='zh-CN'>
-    <head>
-        <meta charset='utf-8'>
-        <meta name='viewport' content='maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,width=device-width,initial-scale=1.0'/>
-        <link rel='stylesheet' type='text/css' href='../css/module.css' />
-        <style type='text/css'>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport'
+          content='maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,width=device-width,initial-scale=1.0'/>
+    <link rel='stylesheet' type='text/css' href='../css/module.css'/>
+    <style type='text/css'>
           .diy-btn-group-test {margin : 10px 0px 0px 0px;}
           body{-webkit-user-select:none;}
-        </style>
-    </head>
-    <body>
+
+
+
+
+
+
+    </style>
+</head>
+<body>
 <div class="panel panel-info">
-  <div class="panel-heading">
-    <h3 class="panel-title">1. 版本号，当前设备连接的 SSID</h3>
-  </div>
-  <div class="panel-body">
+    <div class="panel-heading">
+        <h3 class="panel-title">1. 版本号，当前设备连接的 SSID</h3>
+    </div>
+    <div class="panel-body">
         <pre class="pre-scrollable">
 /**
  测试接口：
@@ -36,26 +43,26 @@ GizWifiSDK.getPhoneSSID(function(ret, err) {
     }
 });
         </pre>
-</div>
-<div class="panel-footer">    
-    <div class="btn-group btn-group-justified">
-      <div class="btn-group">
-        <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-      </div>      
-      <div class="btn-group">
-        <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
-      </div>
-      <div class="btn-group">
-        <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
-      </div>
     </div>
-</div>
+    <div class="panel-footer">
+        <div class="btn-group btn-group-justified">
+            <div class="btn-group">
+                <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+            </div>
+            <div class="btn-group">
+                <button tapmode="" role="edit" type="button" class="btn btn-info">编辑</button>
+            </div>
+            <div class="btn-group">
+                <button tapmode="" role="restore" type="button" class="btn btn-warning">还原</button>
+            </div>
+        </div>
+    </div>
 
-<div class="panel panel-info">
-  <div class="panel-heading">
-    <h3 class="panel-title">2. 初始化</h3>
-  </div>
-  <div class="panel-body">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">2. 初始化</h3>
+        </div>
+        <div class="panel-body">
         <pre class="pre-scrollable">
 /**
  测试接口：
@@ -63,7 +70,7 @@ GizWifiSDK.getPhoneSSID(function(ret, err) {
  */
 var GizWifiSDK = api.require("gizWifiSDK");
 
-GizWifiSDK.startWithAppID({"appID": "42a7563f305342ae805cbb21d968a0ce", "specialProductKeys": [1], cloudServiceInfo: {"aaa": "bbb"}}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": "42a7563f305342ae805cbb21d968a0ce", "specialProductKeys": [1], "cloudServiceInfo":{"openAPIInfo": "xxx","siteInfo": "xxx","pushInfo": "xxx"}}, function(ret, err) {
     if (err) {
         alert("SDK 初始化：" + JSON.stringify(err));
     } else {
@@ -71,25 +78,63 @@ GizWifiSDK.startWithAppID({"appID": "42a7563f305342ae805cbb21d968a0ce", "special
     }
 });
         </pre>
-</div>
-<div class="panel-footer">    
-    <div class="btn-group btn-group-justified">
-      <div class="btn-group">
-        <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-      </div>      
-      <div class="btn-group">
-        <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
-      </div>
-      <div class="btn-group">
-        <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
-      </div>
-    </div>
-</div>
+        </div>
+        <div class="panel-footer">
+            <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                    <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
+                </div>
+                <div class="btn-group">
+                    <button tapmode="" role="edit" type="button" class="btn btn-info">编辑</button>
+                </div>
+                <div class="btn-group">
+                    <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">3. 初始化 (新接口)</h3>
+            </div>
+            <div class="panel-body">
+        <pre class="pre-scrollable">
+/**
+ 测试接口：
+ startWithAppInfo() 新接口
+ */
+var GizWifiSDK = api.require("gizWifiSDK");
 
-  <div class="panel-heading">
-    <h3 class="panel-title">3. 手动下载设备配置文件（兼容接口）、新接口</h3>
-  </div>
-  <div class="panel-body">
+GizWifiSDK.startWithAppInfo({"appInfo":{ "appId":"42a7563f305342ae805cbb21d968a0ce","appSecret":"dc5b945db45f427c97ec9ae881850623"}, "productInfo":[{"productKey":"xxx","productSecret":"xxx"}], "cloudServiceInfo":{"openAPIInfo": "xxx","siteInfo": "xxx","pushInfo": "xxx"}}, function(ret, err) {
+    if (err) {
+        alert("SDK 初始化：" + JSON.stringify(err));
+    } else {
+        alert("SDK 初始化：" + JSON.stringify(err));
+    }
+});
+        </pre>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-heading">
+                <h3 class="panel-title">4. 手动下载设备配置文件（兼容接口）、新接口</h3>
+            </div>
+            <div class="panel-body">
         <pre class="pre-scrollable">
 /**
  测试接口：
@@ -111,13 +156,13 @@ function didUpdateDeviceFromServer(ret, err) {
 
 var GizWifiSDK = api.require("gizWifiSDK");
 var productKey = "b536db9b15c941c681f983e3c1a8dc1f";//"6f3074fe43894547a4f1314bd7e3ae0b";
-var appID = "42a7563f305342ae805cbb21d968a0ce";
+var appId = "42a7563f305342ae805cbb21d968a0ce";
 
 GizWifiSDK.registerNotifications(function(ret, err) {
     alert("收到通知：" + JSON.stringify(ret));
 });
 
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -139,25 +184,28 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     }
 });
         </pre>
-</div>
-<div class="panel-footer">    
-    <div class="btn-group btn-group-justified">
-      <div class="btn-group">
-        <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-      </div>      
-      <div class="btn-group">
-        <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
-      </div>
-      <div class="btn-group">
-        <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
-      </div>
-    </div>
-</div>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-    <div class="panel-heading">
-        <h3 class="panel-title">4. 小循环登录控制Gokit（兼容模式）</h3>
-    </div>
-    <div class="panel-body">
+            <div class="panel-heading">
+                <h3 class="panel-title">5. 小循环登录控制Gokit（兼容模式）</h3>
+            </div>
+            <div class="panel-body">
         <pre class="pre-scrollable">
 /**
  测试接口：
@@ -173,7 +221,7 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
  */
 var GizWifiSDK = api.require("gizWifiSDK");
 var GizWifiDevice = api.require("gizWifiDevice");
-var appID = "42a7563f305342ae805cbb21d968a0ce";
+var appId = "42a7563f305342ae805cbb21d968a0ce";
 var productKey = "6f3074fe43894547a4f1314bd7e3ae0b";
 var macAddress = "ACCF2359D720";
 
@@ -273,7 +321,7 @@ function didGetBoundDevices(ret, err) {
 	}
 }
 
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -281,25 +329,28 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     }
 });    
         </pre>
-    </div>
-    <div class="panel-footer">
-        <div class="btn-group btn-group-justified">
-            <div class="btn-group">
-                <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-            </div>      
-            <div class="btn-group">
-                <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
             </div>
-            <div class="btn-group">
-                <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    
-    <div class="panel-heading">
-        <h3 class="panel-title">5. 小循环登录控制Gokit</h3>
-    </div>
-    <div class="panel-body">
+
+            <div class="panel-heading">
+                <h3 class="panel-title">6. 小循环登录控制Gokit</h3>
+            </div>
+            <div class="panel-body">
         <pre class="pre-scrollable">
 /**
  测试接口：
@@ -309,7 +360,7 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
  */
 var GizWifiSDK = api.require("gizWifiSDK");
 var GizWifiDevice = api.require("gizWifiDevice");
-var appID = "42a7563f305342ae805cbb21d968a0ce";
+var appId = "42a7563f305342ae805cbb21d968a0ce";
 var productKey = "6f3074fe43894547a4f1314bd7e3ae0b";
 var macAddress = "ACCF2359D720";
 
@@ -367,7 +418,7 @@ function didGetBoundDevices(ret, err) {
 	}
 }
 
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -376,25 +427,28 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
 });
             
         </pre>
-    </div>
-    <div class="panel-footer">
-        <div class="btn-group btn-group-justified">
-            <div class="btn-group">
-                <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-            </div>      
-            <div class="btn-group">
-                <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
             </div>
-            <div class="btn-group">
-                <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    
-    <div class="panel-heading">
-        <h3 class="panel-title">6. 匿名登录，绑定，解绑</h3>
-    </div>
-    <div class="panel-body">
+
+            <div class="panel-heading">
+                <h3 class="panel-title">7. 匿名登录，绑定，解绑</h3>
+            </div>
+            <div class="panel-body">
         <pre class="pre-scrollable">
 /**
  测试接口：
@@ -406,7 +460,7 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
  */
  
 var GizWifiSDK = api.require("gizWifiSDK");
-var appID = "5e025b6630e14f0db478cf59c2fe526c";
+var appId = "5e025b6630e14f0db478cf59c2fe526c";
 
 function didBindDevice(ret, err) {
 	if (err) {
@@ -431,10 +485,10 @@ function didUserLogin(ret, err) {
 		alert("登录：" + JSON.stringify(ret));
 		
         //二维码绑定
-        <!-- var QRContent = "111839228a994187929bd0a45abcb6e0s3keuWBaidGOPWwJTjIuOjCyL1ieIlueNjQOM+GQuiMpEVyhe0sOMkT8gVj3W1pEcpGl3g==";
-        GizWifiSDK.bindDeviceByQRCode({"uid": ret.uid, "token": ret.token, "QRContent": QRContent}, didBindDevice);
-        GizWifiSDK.setLogLevel({"logLevel": 2, "printDataLevel": true});
- -->        
+            <!-- var QRContent = "111839228a994187929bd0a45abcb6e0s3keuWBaidGOPWwJTjIuOjCyL1ieIlueNjQOM+GQuiMpEVyhe0sOMkT8gVj3W1pEcpGl3g==";
+            GizWifiSDK.bindDeviceByQRCode({"uid": ret.uid, "token": ret.token, "QRContent": QRContent}, didBindDevice);
+            GizWifiSDK.setLogLevel({"logLevel": 2, "printDataLevel": true});
+     -->
 		//兼容旧的绑定接口
         
 		GizWifiSDK.bindDevice({"uid": ret.uid, "token": ret.token,
@@ -455,7 +509,7 @@ function didUserLogin(ret, err) {
 	}
 }
 
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -463,25 +517,87 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     }
 });
         </pre>
-    </div>
-    <div class="panel-footer">
-        <div class="btn-group btn-group-justified">
-            <div class="btn-group">
-                <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-            </div>      
-            <div class="btn-group">
-                <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
             </div>
-            <div class="btn-group">
-                <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-          <div class="panel-heading">
-            <h3 class="panel-title">7. 设置日志分级、配置设备上网</h3>
-        </div>
-        <div class="panel-body">
+            <div class="panel-heading">
+                <h3 class="panel-title">8. 根据二维码绑定设备到服务器</h3>
+            </div>
+            <div class="panel-body">
+        <pre class="pre-scrollable">
+/**
+ 测试接口：
+ bindDeviceByQRCode()
+ */
+
+var GizWifiSDK = api.require("gizWifiSDK");
+var appId = "42a7563f305342ae805cbb21d968a0ce";
+
+function didBindDevice(ret, err) {
+	if (err) {
+		alert("绑定：" + JSON.stringify(err));
+	} else {
+		alert("绑定：" + JSON.stringify(ret));
+	}
+}
+
+function didUserLogin(ret, err) {
+	if (err) {
+		alert("登录：" + JSON.stringify(err));
+	} else {
+		alert("登录：" + JSON.stringify(ret));
+
+        //二维码绑定
+        var QRContent = "111839228a994187929bd0a45abcb6e0s3keuWBaidGOPWwJTjIuOjCyL1ieIlueNjQOM+GQuiMpEVyhe0sOMkT8gVj3W1pEcpGl3g==";
+		GizWifiSDK.bindDeviceByQRCode({"uid": ret.uid, "token": ret.token,"QRContent": QRContent}, didBindDevice);
+	}
+}
+
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+    if (err) {
+        alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
+    } else {
+		GizWifiSDK.userLoginAnonymous(didUserLogin);
+    }
+});
+        </pre>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-heading">
+                <h3 class="panel-title">9. 设置日志分级、配置设备上网</h3>
+            </div>
+            <div class="panel-body">
             <pre class="pre-scrollable">
 /**
  测试接口：
@@ -489,7 +605,7 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
  setDeviceOnboarding()
  getSSIDList() soft-ap模式获取ssid列表
  */
-var appID = "42a7563f305342ae805cbb21d968a0ce";            
+var appId = "42a7563f305342ae805cbb21d968a0ce";
 var GizWifiSDK = api.require("gizWifiSDK");
 
 // 日志模式（枚举）
@@ -517,7 +633,7 @@ GizWifiSDK.getSSIDList(function(ret, err) {
 });
 */
 
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -536,24 +652,114 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     }
 });
             </pre>
-        </div>
-        <div class="panel-footer">
-            <div class="btn-group btn-group-justified">
-                <div class="btn-group">
-                    <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-                </div>      
-                <div class="btn-group">
-                    <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
-                </div>
-                <div class="btn-group">
-                    <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="panel-heading">
-            <h3 class="panel-title">8. 用户注册</h3>
-        </div>
-        <div class="panel-body">
+
+            <div class="panel-heading">
+                <h3 class="panel-title">10. 设备配网接口,配网时可自动完成设备域名部署</h3>
+            </div>
+            <div class="panel-body">
+            <pre class="pre-scrollable">
+/**
+ 测试接口：
+ setDeviceOnboardingDeploy()
+ */
+var appId = "42a7563f305342ae805cbb21d968a0ce";
+var GizWifiSDK = api.require("gizWifiSDK");
+
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+    if (err) {
+        alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
+    } else {
+        GizWifiSDK.setDeviceOnboardingDeploy({"ssid": "919",
+        "key": "900901902",
+        "mode": GizWifiAirLink/*GizWifiSoftAP*/,
+        "softAPSSIDPrefix": "XPG-GAgent",
+        "timeout": 60,
+        "bind":true },function(ret, err) {
+            if (err) {
+                alert("设备配置：" + JSON.stringify(err));
+                return;
+            }
+            alert("设备配置：" + JSON.stringify(ret));
+        });
+    }
+});
+            </pre>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-heading">
+                <h3 class="panel-title">11. 停止配网接口</h3>
+            </div>
+            <div class="panel-body">
+            <pre class="pre-scrollable">
+/**
+ 测试接口：
+ stopDeviceOnboarding()
+ */
+var GizWifiSDK = api.require("gizWifiSDK");
+
+GizWifiSDK.stopDeviceOnboarding(function(ret, err) {
+    if (err) {
+        alert("设备配置：" + JSON.stringify(err));
+            return;
+    }
+    alert("设备配置：" + JSON.stringify(ret));
+});
+            </pre>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-heading">
+                <h3 class="panel-title">12. 用户注册</h3>
+            </div>
+            <div class="panel-body">
             <pre class="pre-scrollable">
 /**
  测试接口：
@@ -562,14 +768,14 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
  registerUserByEmail() 兼容旧接口
  requestSendVerifyCode() 手机验证码
  */
-var appID = "42a7563f305342ae805cbb21d968a0ce";            
+var appId = "42a7563f305342ae805cbb21d968a0ce";
 var GizWifiSDK = api.require("gizWifiSDK");
 
 //在这里，输入你的电话号码，和验证码
 var phone = "phone";
 var code = "code";
 
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -623,34 +829,37 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     }
 });
             </pre>
-        </div>
-        <div class="panel-footer">
-            <div class="btn-group btn-group-justified">
-                <div class="btn-group">
-                    <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-                </div>      
-                <div class="btn-group">
-                    <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
-                </div>
-                <div class="btn-group">
-                    <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="panel-heading">
-            <h3 class="panel-title">9. 用户登录</h3>
-        </div>
-        <div class="panel-body">
+            <div class="panel-heading">
+                <h3 class="panel-title">13. 用户登录</h3>
+            </div>
+            <div class="panel-body">
             <pre class="pre-scrollable">
 /**
  测试接口：
  userLogin() 登录接口
  userLoginWithThirdAccountType() 第三方账号登录接口
  */
-var appID = "42a7563f305342ae805cbb21d968a0ce";            
+var appId = "42a7563f305342ae805cbb21d968a0ce";
 var GizWifiSDK = api.require("gizWifiSDK");
 
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -688,24 +897,27 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     }
 });
             </pre>
-        </div>
-        <div class="panel-footer">
-            <div class="btn-group btn-group-justified">
-                <div class="btn-group">
-                    <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-                </div>      
-                <div class="btn-group">
-                    <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
-                </div>
-                <div class="btn-group">
-                    <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-                <div class="panel-heading">
-            <h3 class="panel-title">10. 转换匿名用户为实名用户</h3>
-        </div>
-        <div class="panel-body">
+            <div class="panel-heading">
+                <h3 class="panel-title">14. 转换匿名用户为实名用户</h3>
+            </div>
+            <div class="panel-body">
             <pre class="pre-scrollable">
 /**
  测试接口：
@@ -713,7 +925,7 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
  transAnonymousUserToNormalUser()
  transAnonymousUserToPhoneUser()
  */
-var appID = "42a7563f305342ae805cbb21d968a0ce";            
+var appId = "42a7563f305342ae805cbb21d968a0ce";
 var GizWifiSDK = api.require("gizWifiSDK");
 
 //在这里，设置token
@@ -721,7 +933,7 @@ var token = "token";
 var phone = "phone";
 var code = "code";
 
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -764,24 +976,27 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     }
 });
             </pre>
-        </div>
-        <div class="panel-footer">
-            <div class="btn-group btn-group-justified">
-                <div class="btn-group">
-                    <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-                </div>      
-                <div class="btn-group">
-                    <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
-                </div>
-                <div class="btn-group">
-                    <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="panel-heading">
-            <h3 class="panel-title">11. 修改密码、忘记密码</h3>
-        </div>
-        <div class="panel-body">
+            <div class="panel-heading">
+                <h3 class="panel-title">15. 修改密码、忘记密码</h3>
+            </div>
+            <div class="panel-body">
             <pre class="pre-scrollable">
 /**
  测试接口：
@@ -790,7 +1005,7 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
  changeUserPasswordByCode()
  changeUserPasswordByEmail()
  */
-var appID = "42a7563f305342ae805cbb21d968a0ce";            
+var appId = "42a7563f305342ae805cbb21d968a0ce";
 var GizWifiSDK = api.require("gizWifiSDK");
 
 //在这里，设置token
@@ -798,7 +1013,7 @@ var token = "token";
 var code = "code";
 var phone = "phone";
 
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -850,31 +1065,34 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     }
 });
             </pre>
-        </div>
-        <div class="panel-footer">
-            <div class="btn-group btn-group-justified">
-                <div class="btn-group">
-                    <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-                </div>      
-                <div class="btn-group">
-                    <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
-                </div>
-                <div class="btn-group">
-                    <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="panel-heading">
-            <h3 class="panel-title">12. 账号补充邮箱、手机信息</h3>
-        </div>
-        <div class="panel-body">
+
+            <div class="panel-heading">
+                <h3 class="panel-title">16. 账号补充邮箱、手机信息</h3>
+            </div>
+            <div class="panel-body">
             <pre class="pre-scrollable">
 /**
  测试接口：
- changeUserInfo() 不包含附加信息，剩余部分见用例 17
+ changeUserInfo() 不包含附加信息，剩余部分见用例 21
  */
-var appID = "42a7563f305342ae805cbb21d968a0ce";            
+var appId = "42a7563f305342ae805cbb21d968a0ce";
 var GizWifiSDK = api.require("gizWifiSDK");
 
 //在这里，设置token
@@ -882,7 +1100,7 @@ var token = "token";
 var phone = "phone";
 var code = "code";
 
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -901,25 +1119,28 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     }
 });
             </pre>
-        </div>
-        <div class="panel-footer">
-            <div class="btn-group btn-group-justified">
-                <div class="btn-group">
-                    <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-                </div>      
-                <div class="btn-group">
-                    <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
-                </div>
-                <div class="btn-group">
-                    <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="panel-heading">
-            <h3 class="panel-title">13. 中控分组</h3>
-        </div>
-        <div class="panel-body">
+
+            <div class="panel-heading">
+                <h3 class="panel-title">17. 中控分组</h3>
+            </div>
+            <div class="panel-body">
             <pre class="pre-scrollable">
 /**
  测试接口：
@@ -934,7 +1155,7 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
  removeGroup()		分组删除
  editGroup()		分组编辑
  */
-var appID = "42a7563f305342ae805cbb21d968a0ce";
+var appId = "42a7563f305342ae805cbb21d968a0ce";
 var GizWifiSDK = api.require("gizWifiSDK");
 var GizWifiGroup = api.require("gizWifiGroup");
 
@@ -1060,7 +1281,7 @@ function didUserLogin(ret, err) {
     */
 }
 
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1069,24 +1290,27 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     }
 });
             </pre>
-        </div>
-        <div class="panel-footer">
-            <div class="btn-group btn-group-justified">
-                <div class="btn-group">
-                    <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-                </div>      
-                <div class="btn-group">
-                    <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
-                </div>
-                <div class="btn-group">
-                    <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    <div class="panel-heading">
-        <h3 class="panel-title">14. 中控整个流程</h3>
-    </div>
-    <div class="panel-body">
+            <div class="panel-heading">
+                <h3 class="panel-title">18. 中控整个流程</h3>
+            </div>
+            <div class="panel-body">
         <pre class="pre-scrollable">
 /**
  测试接口：
@@ -1098,7 +1322,7 @@ var GizWifiSDK = api.require("gizWifiSDK");
 var GizWifiCentralControlDevice = api.require("gizWifiCentralControlDevice");
 var GizWifiSubDevice = api.require("gizWifiSubDevice");
 
-var appID = "42a7563f305342ae805cbb21d968a0ce";
+var appId = "42a7563f305342ae805cbb21d968a0ce";
 var productKey = "a350195b4d814890aaffde668e02668d";
 var macAddress = "ACCF23346866";
 
@@ -1171,7 +1395,7 @@ function didGetBoundDevices(ret, err) {
 	}
 }
 
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1179,24 +1403,27 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     }
 });    
         </pre>
-    </div>
-    <div class="panel-footer">
-        <div class="btn-group btn-group-justified">
-            <div class="btn-group">
-                <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-            </div>      
-            <div class="btn-group">
-                <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
             </div>
-            <div class="btn-group">
-                <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="panel-heading">
-        <h3 class="panel-title">15. 字符串数组互转</h3>
-    </div>
-    <div class="panel-body">
+            <div class="panel-heading">
+                <h3 class="panel-title">19. 字符串数组互转</h3>
+            </div>
+            <div class="panel-body">
         <pre class="pre-scrollable">
 /**
  测试接口：
@@ -1216,24 +1443,27 @@ GizWifiBinary.decode({"binary": src2}, function(ret, err) {
     alert("解码：" + JSON.stringify(ret));
 });
         </pre>
-    </div>
-    <div class="panel-footer">
-        <div class="btn-group btn-group-justified">
-            <div class="btn-group">
-                <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
             </div>
-            <div class="btn-group">
-                <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="btn-group">
-                <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            <div class="panel-heading">
+                <h3 class="panel-title">20. 新版短信验证码</h3>
             </div>
-        </div>
-    </div>
-    <div class="panel-heading">
-        <h3 class="panel-title">16. 新版短信验证码</h3>
-    </div>
-    <div class="panel-body">
+            <div class="panel-body">
         <pre class="pre-scrollable">
 /**
  测试接口：
@@ -1242,7 +1472,7 @@ GizWifiBinary.decode({"binary": src2}, function(ret, err) {
  verifyPhoneSMSCode()
  */
 var GizWifiSDK = api.require("gizWifiSDK");
-var appID = "42a7563f305342ae805cbb21d968a0ce";
+var appId = "42a7563f305342ae805cbb21d968a0ce";
 var appSecret = "dc5b945db45f427c97ec9ae881850623";
 
 var phone = "自行填写";
@@ -1252,7 +1482,7 @@ var captchaId = "自行填写";
 var captchaCode = "自行填写";
 var phoneCode = "自行填写";
 
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1287,24 +1517,27 @@ GizWifiSDK.verifyPhoneSMSCode({"token": token, "phoneCode": phoneCode, "phone": 
 })
 */
         </pre>
-    </div>
-    <div class="panel-footer">
-        <div class="btn-group btn-group-justified">
-            <div class="btn-group">
-                <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-            </div>      
-            <div class="btn-group">
-                <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
             </div>
-            <div class="btn-group">
-                <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="panel-heading">
-        <h3 class="panel-title">17. 修改、获取用户信息</h3>
-    </div>
-    <div class="panel-body">
+            <div class="panel-heading">
+                <h3 class="panel-title">21. 修改、获取用户信息</h3>
+            </div>
+            <div class="panel-body">
         <pre class="pre-scrollable">
 /**
  测试接口：
@@ -1312,10 +1545,10 @@ GizWifiSDK.verifyPhoneSMSCode({"token": token, "phoneCode": phoneCode, "phone": 
  getUserInfo()
  */
 var GizWifiSDK = api.require("gizWifiSDK");
-var appID = "42a7563f305342ae805cbb21d968a0ce";
+var appId = "42a7563f305342ae805cbb21d968a0ce";
 var token = "自行填写";
 
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1339,25 +1572,28 @@ GizWifiSDK.getUserInfo({"token": token}, function(ret, err) {
     }
 });
         </pre>
-    </div>
-    <div class="panel-footer">
-        <div class="btn-group btn-group-justified">
-            <div class="btn-group">
-                <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-            </div>      
-            <div class="btn-group">
-                <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
             </div>
-            <div class="btn-group">
-                <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    
-    <div class="panel-heading">
-    	<h3 class="panel-title">18.设置服务器、错误码转换</h3>
-	</div>
-	<div class="panel-body">
+
+            <div class="panel-heading">
+                <h3 class="panel-title">22.设置服务器、错误码转换</h3>
+            </div>
+            <div class="panel-body">
 	    <pre class="pre-scrollable">
 /**
  测试接口：
@@ -1365,9 +1601,9 @@ GizWifiSDK.getUserInfo({"token": token}, function(ret, err) {
  
  */
 var GizWifiSDK = api.require("gizWifiSDK");
-var appID = "42a7563f305342ae805cbb21d968a0ce";
+var appId = "42a7563f305342ae805cbb21d968a0ce";
 
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1393,25 +1629,28 @@ GizWifiSDK.errorCodeConversion({"errorCode": errorCode}, function(ret, err) {
     alert("ret = " + JSON.stringify(ret));
 });
     </pre>
-</div>
-<div class="panel-footer">
-    <div class="btn-group btn-group-justified">
-        <div class="btn-group">
-            <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-        </div>
-        <div class="btn-group">
-            <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
-        </div>
-        <div class="btn-group">
-            <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
-        </div>
-    </div>
-</div>
-    
-<div class="panel-heading">
-    <h3 class="panel-title">19.定时任务</h3>
-</div>
-<div class="panel-body">
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-heading">
+                <h3 class="panel-title">23.定时任务</h3>
+            </div>
+            <div class="panel-body">
     <pre class="pre-scrollable">
 /**
  测试接口：
@@ -1422,9 +1661,9 @@ GizWifiSDK.errorCodeConversion({"errorCode": errorCode}, function(ret, err) {
  
  */
 var GizWifiSDK = api.require("gizWifiSDK");
-var appID = "42a7563f305342ae805cbb21d968a0ce";
+var appId = "42a7563f305342ae805cbb21d968a0ce";
 
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1497,24 +1736,27 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     }
 });
     </pre>
-</div>
-<div class="panel-footer">
-    <div class="btn-group btn-group-justified">
-        <div class="btn-group">
-            <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-        </div>
-        <div class="btn-group">
-            <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
-        </div>
-        <div class="btn-group">
-            <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
-        </div>
-    </div>
-</div>
-<div class="panel-heading">
-    <h3 class="panel-title">20.推送通知</h3>
-</div>
-<div class="panel-body">
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-heading">
+                <h3 class="panel-title">24.推送通知</h3>
+            </div>
+            <div class="panel-body">
     <pre class="pre-scrollable">
 /**
  测试接口：
@@ -1522,9 +1764,9 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
  channelIDUnBind()
  */
 var GizWifiSDK = api.require("gizWifiSDK");
-var appID = "42a7563f305342ae805cbb21d968a0ce";
+var appId = "42a7563f305342ae805cbb21d968a0ce";
         
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1533,6 +1775,7 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
         //绑定推送
         var GizPushBaiDu = 0;
         var GizPushJiGuang = 1;
+        var GizPushAWS = 2;
                 
         var param = {"token": "your token",
                      "channelID": "your channel id",
@@ -1561,25 +1804,28 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     }
 });
     </pre>
-</div>
-<div class="panel-footer">
-    <div class="btn-group btn-group-justified">
-        <div class="btn-group">
-            <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-        </div>
-        <div class="btn-group">
-            <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
-        </div>
-        <div class="btn-group">
-            <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
-        </div>
-    </div>
-</div>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-<div class="panel-heading">
-    <h3 class="panel-title">21.小循环域名设置</h3>
-</div>
-<div class="panel-body">
+            <div class="panel-heading">
+                <h3 class="panel-title">25.小循环域名设置</h3>
+            </div>
+            <div class="panel-body">
     <pre class="pre-scrollable">
 /**
  测试接口：
@@ -1587,9 +1833,9 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
  setDeviceServerInfo()
  */
 var GizWifiSDK = api.require("gizWifiSDK");
-var appID = "42a7563f305342ae805cbb21d968a0ce";
+var appId = "42a7563f305342ae805cbb21d968a0ce";
         
-GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1618,22 +1864,25 @@ GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     }
 });
     </pre>
-</div>
-<div class="panel-footer">
-    <div class="btn-group btn-group-justified">
-        <div class="btn-group">
-            <button tapmode="" role="run" type="button" class="btn btn-primary">运行</button>
-        </div>
-        <div class="btn-group">
-            <button tapmode=""  role="edit" type="button" class="btn btn-info">编辑</button>
-        </div>
-        <div class="btn-group">
-            <button tapmode=""  role="restore" type="button" class="btn btn-warning">还原</button>
-        </div>
-    </div>
-</div>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button tapmode="" role="run" type="button" class="btn btn-primary">运行
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="edit" type="button" class="btn btn-info">编辑
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button tapmode="" role="restore" type="button" class="btn btn-warning">还原
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-</div>
-    </body>
-    <script src='../script/module.js'></script>
+        </div>
+</body>
+<script src='../script/module.js'></script>
 </html>
