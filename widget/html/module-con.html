@@ -74,7 +74,7 @@ GizWifiSDK.startWithAppID({"appId": "42a7563f305342ae805cbb21d968a0ce", "special
     if (err) {
         alert("SDK 初始化：" + JSON.stringify(err));
     } else {
-        alert("SDK 初始化：" + JSON.stringify(err));
+        alert("SDK 初始化：" + JSON.stringify(ret));
     }
 });
         </pre>
@@ -109,7 +109,7 @@ GizWifiSDK.startWithAppInfo({"appInfo":{ "appId":"42a7563f305342ae805cbb21d968a0
     if (err) {
         alert("SDK 初始化：" + JSON.stringify(err));
     } else {
-        alert("SDK 初始化：" + JSON.stringify(err));
+        alert("SDK 初始化：" + JSON.stringify(ret));
     }
 });
         </pre>
@@ -681,6 +681,9 @@ GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
  */
 var appId = "42a7563f305342ae805cbb21d968a0ce";
 var GizWifiSDK = api.require("gizWifiSDK");
+// 配置设备上线模式（枚举）
+var GizWifiSoftAP = 0;
+var GizWifiAirLink = 1;
 
 GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
     if (err) {
