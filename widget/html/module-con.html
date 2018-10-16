@@ -66,11 +66,11 @@ GizWifiSDK.getPhoneSSID(function(ret, err) {
         <pre class="pre-scrollable">
 /**
  测试接口：
- startWithAppID() appId长度为非32的情况，新增两个参数
+ startWithAppID() appID长度为非32的情况，新增两个参数
  */
 var GizWifiSDK = api.require("gizWifiSDK");
 
-GizWifiSDK.startWithAppID({"appId": "42a7563f305342ae805cbb21d968a0ce", "specialProductKeys": [1], "cloudServiceInfo":{"openAPIInfo": "xxx","siteInfo": "xxx","pushInfo": "xxx"}}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": "42a7563f305342ae805cbb21d968a0ce", "specialProductKeys": [1], "cloudServiceInfo":{"openAPIInfo": "xxx","siteInfo": "xxx","pushInfo": "xxx"}}, function(ret, err) {
     if (err) {
         alert("SDK 初始化：" + JSON.stringify(err));
     } else {
@@ -138,7 +138,7 @@ GizWifiSDK.startWithAppInfo({"appInfo":{ "appId":"42a7563f305342ae805cbb21d968a0
         <pre class="pre-scrollable">
 /**
  测试接口：
- startWithAppID() appId长度为32的情况
+ startWithAppID() appID长度为32的情况
  updateDeviceFromServer()
  registerNotifications() 新接口
  getListInfo() 新接口
@@ -156,13 +156,13 @@ function didUpdateDeviceFromServer(ret, err) {
 
 var GizWifiSDK = api.require("gizWifiSDK");
 var productKey = "b536db9b15c941c681f983e3c1a8dc1f";//"6f3074fe43894547a4f1314bd7e3ae0b";
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
 
 GizWifiSDK.registerNotifications(function(ret, err) {
     alert("收到通知：" + JSON.stringify(ret));
 });
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -221,7 +221,7 @@ GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
  */
 var GizWifiSDK = api.require("gizWifiSDK");
 var GizWifiDevice = api.require("gizWifiDevice");
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
 var productKey = "6f3074fe43894547a4f1314bd7e3ae0b";
 var macAddress = "ACCF2359D720";
 
@@ -321,7 +321,7 @@ function didGetBoundDevices(ret, err) {
 	}
 }
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -360,7 +360,7 @@ GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
  */
 var GizWifiSDK = api.require("gizWifiSDK");
 var GizWifiDevice = api.require("gizWifiDevice");
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
 var productKey = "6f3074fe43894547a4f1314bd7e3ae0b";
 var macAddress = "ACCF2359D720";
 
@@ -418,7 +418,7 @@ function didGetBoundDevices(ret, err) {
 	}
 }
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -460,7 +460,7 @@ GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
  */
  
 var GizWifiSDK = api.require("gizWifiSDK");
-var appId = "5e025b6630e14f0db478cf59c2fe526c";
+var appID = "5e025b6630e14f0db478cf59c2fe526c";
 
 function didBindDevice(ret, err) {
 	if (err) {
@@ -509,7 +509,7 @@ function didUserLogin(ret, err) {
 	}
 }
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -546,7 +546,7 @@ GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
  */
 
 var GizWifiSDK = api.require("gizWifiSDK");
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
 
 function didBindDevice(ret, err) {
 	if (err) {
@@ -568,7 +568,7 @@ function didUserLogin(ret, err) {
 	}
 }
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -605,7 +605,7 @@ GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
  setDeviceOnboarding()
  getSSIDList() soft-ap模式获取ssid列表
  */
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
 var GizWifiSDK = api.require("gizWifiSDK");
 
 // 日志模式（枚举）
@@ -633,7 +633,7 @@ GizWifiSDK.getSSIDList(function(ret, err) {
 });
 */
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -679,13 +679,13 @@ GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
  测试接口：
  setDeviceOnboardingDeploy()
  */
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
 var GizWifiSDK = api.require("gizWifiSDK");
 // 配置设备上线模式（枚举）
 var GizWifiSoftAP = 0;
 var GizWifiAirLink = 1;
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -771,14 +771,14 @@ GizWifiSDK.stopDeviceOnboarding(function(ret, err) {
  registerUserByEmail() 兼容旧接口
  requestSendVerifyCode() 手机验证码
  */
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
 var GizWifiSDK = api.require("gizWifiSDK");
 
 //在这里，输入你的电话号码，和验证码
 var phone = "phone";
 var code = "code";
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -859,10 +859,10 @@ GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
  userLogin() 登录接口
  userLoginWithThirdAccountType() 第三方账号登录接口
  */
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
 var GizWifiSDK = api.require("gizWifiSDK");
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -928,7 +928,7 @@ GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
  transAnonymousUserToNormalUser()
  transAnonymousUserToPhoneUser()
  */
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
 var GizWifiSDK = api.require("gizWifiSDK");
 
 //在这里，设置token
@@ -936,7 +936,7 @@ var token = "token";
 var phone = "phone";
 var code = "code";
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1008,7 +1008,7 @@ GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
  changeUserPasswordByCode()
  changeUserPasswordByEmail()
  */
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
 var GizWifiSDK = api.require("gizWifiSDK");
 
 //在这里，设置token
@@ -1016,7 +1016,7 @@ var token = "token";
 var code = "code";
 var phone = "phone";
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1095,7 +1095,7 @@ GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
  测试接口：
  changeUserInfo() 不包含附加信息，剩余部分见用例 21
  */
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
 var GizWifiSDK = api.require("gizWifiSDK");
 
 //在这里，设置token
@@ -1103,7 +1103,7 @@ var token = "token";
 var phone = "phone";
 var code = "code";
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1158,7 +1158,7 @@ GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
  removeGroup()		分组删除
  editGroup()		分组编辑
  */
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
 var GizWifiSDK = api.require("gizWifiSDK");
 var GizWifiGroup = api.require("gizWifiGroup");
 
@@ -1284,7 +1284,7 @@ function didUserLogin(ret, err) {
     */
 }
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1325,7 +1325,7 @@ var GizWifiSDK = api.require("gizWifiSDK");
 var GizWifiCentralControlDevice = api.require("gizWifiCentralControlDevice");
 var GizWifiSubDevice = api.require("gizWifiSubDevice");
 
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
 var productKey = "a350195b4d814890aaffde668e02668d";
 var macAddress = "ACCF23346866";
 
@@ -1398,7 +1398,7 @@ function didGetBoundDevices(ret, err) {
 	}
 }
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1475,7 +1475,7 @@ GizWifiBinary.decode({"binary": src2}, function(ret, err) {
  verifyPhoneSMSCode()
  */
 var GizWifiSDK = api.require("gizWifiSDK");
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
 var appSecret = "dc5b945db45f427c97ec9ae881850623";
 
 var phone = "自行填写";
@@ -1485,7 +1485,7 @@ var captchaId = "自行填写";
 var captchaCode = "自行填写";
 var phoneCode = "自行填写";
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1548,10 +1548,10 @@ GizWifiSDK.verifyPhoneSMSCode({"token": token, "phoneCode": phoneCode, "phone": 
  getUserInfo()
  */
 var GizWifiSDK = api.require("gizWifiSDK");
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
 var token = "自行填写";
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1604,9 +1604,9 @@ GizWifiSDK.getUserInfo({"token": token}, function(ret, err) {
  
  */
 var GizWifiSDK = api.require("gizWifiSDK");
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1664,9 +1664,9 @@ GizWifiSDK.errorCodeConversion({"errorCode": errorCode}, function(ret, err) {
  
  */
 var GizWifiSDK = api.require("gizWifiSDK");
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
 
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1767,9 +1767,9 @@ GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
  channelIDUnBind()
  */
 var GizWifiSDK = api.require("gizWifiSDK");
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
         
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
@@ -1836,9 +1836,9 @@ GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
  setDeviceServerInfo()
  */
 var GizWifiSDK = api.require("gizWifiSDK");
-var appId = "42a7563f305342ae805cbb21d968a0ce";
+var appID = "42a7563f305342ae805cbb21d968a0ce";
         
-GizWifiSDK.startWithAppID({"appId": appId}, function(ret, err) {
+GizWifiSDK.startWithAppID({"appID": appID}, function(ret, err) {
     if (err) {
         alert("SDK 初始化失败。错误信息：" + JSON.stringify(err));
     } else {
